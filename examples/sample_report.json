@@ -1,0 +1,227 @@
+{
+  "findings": [
+    {
+      "category": "http",
+      "description": "A CSP limits where scripts and other content can load from, which reduces the impact of cross-site scripting.",
+      "evidence": "Content-Security-Policy header not present",
+      "id": "SS-HTTP-004",
+      "port": 8080,
+      "remediation": "Define a Content-Security-Policy, starting with default-src 'self'.",
+      "score": 30,
+      "severity": "MEDIUM",
+      "target": "127.0.0.1",
+      "title": "Missing Content-Security-Policy"
+    },
+    {
+      "category": "http",
+      "description": "Browsers may guess a response's content type and run it as something dangerous (MIME sniffing).",
+      "evidence": "header not present",
+      "id": "SS-HTTP-006",
+      "port": 8080,
+      "remediation": "Send X-Content-Type-Options: nosniff",
+      "score": 10,
+      "severity": "LOW",
+      "target": "127.0.0.1",
+      "title": "X-Content-Type-Options not set to nosniff"
+    },
+    {
+      "category": "http",
+      "description": "The page can be embedded in a frame on another site, which enables clickjacking attacks.",
+      "evidence": "neither X-Frame-Options nor CSP frame-ancestors present",
+      "id": "SS-HTTP-007",
+      "port": 8080,
+      "remediation": "Send X-Frame-Options: DENY or a CSP with frame-ancestors 'none'.",
+      "score": 10,
+      "severity": "LOW",
+      "target": "127.0.0.1",
+      "title": "No clickjacking protection"
+    },
+    {
+      "category": "http",
+      "description": "Cookies without HttpOnly can be read by JavaScript, so an injected script can steal them.",
+      "evidence": "cookies: sessionid, theme",
+      "id": "SS-HTTP-010",
+      "port": 8080,
+      "remediation": "Add HttpOnly to cookies that JavaScript does not need to read.",
+      "score": 10,
+      "severity": "LOW",
+      "target": "127.0.0.1",
+      "title": "Cookie missing HttpOnly flag"
+    },
+    {
+      "category": "http",
+      "description": "Cookies without SameSite (or with SameSite=None but no Secure) are sent on cross-site requests, which enables CSRF.",
+      "evidence": "cookies: sessionid, theme",
+      "id": "SS-HTTP-011",
+      "port": 8080,
+      "remediation": "Set SameSite=Lax or Strict; SameSite=None requires the Secure attribute.",
+      "score": 10,
+      "severity": "LOW",
+      "target": "127.0.0.1",
+      "title": "Cookie missing or weak SameSite"
+    },
+    {
+      "category": "http",
+      "description": "Response headers reveal exact software versions. This helps an attacker pick known exploits for that version.",
+      "evidence": "Server: Apache/2.4.49; X-Powered-By: PHP/8.1.0",
+      "id": "SS-HTTP-012",
+      "port": 8080,
+      "remediation": "Remove version numbers from the Server and X-Powered-By headers.",
+      "score": 10,
+      "severity": "LOW",
+      "target": "127.0.0.1",
+      "title": "Server software and version disclosed"
+    },
+    {
+      "category": "http",
+      "description": "Without a Referrer-Policy, browsers may send full URLs to other sites.",
+      "evidence": "Referrer-Policy header not present",
+      "id": "SS-HTTP-008",
+      "port": 8080,
+      "remediation": "Send Referrer-Policy: strict-origin-when-cross-origin (or stricter).",
+      "score": 0,
+      "severity": "INFO",
+      "target": "127.0.0.1",
+      "title": "Missing Referrer-Policy"
+    },
+    {
+      "category": "network",
+      "description": "A TCP port accepted a connection. Open ports are the attack surface of a host; each one should be there on purpose.",
+      "evidence": "port 8080 accepted a TCP connection; http (confirmed)",
+      "id": "SS-NET-001",
+      "port": 8080,
+      "remediation": "Close or firewall ports that are not needed. Keep a list of expected open ports.",
+      "score": 0,
+      "severity": "INFO",
+      "target": "127.0.0.1",
+      "title": "Open TCP port"
+    }
+  ],
+  "metadata": {
+    "duration_s": 0.51,
+    "finished_at_utc": "2026-10-08T14:40:54Z",
+    "platform": "macOS-26.6.2-arm64-arm-64bit-Mach-O",
+    "python_version": "3.14.5",
+    "scan_config": {
+      "cafile": null,
+      "concurrency": 50,
+      "follow_redirects": false,
+      "max_redirects": 5,
+      "ports": "1 ports",
+      "server_name": null,
+      "timeout_s": 1.0
+    },
+    "schema_version": "1.0",
+    "started_at_utc": "2026-10-08T14:40:53Z",
+    "tool_name": "SentinelScan",
+    "tool_version": "0.1.0"
+  },
+  "observations": {
+    "http": [
+      {
+        "cookies": [
+          {
+            "http_only": false,
+            "name": "sessionid",
+            "same_site": null,
+            "secure": false
+          },
+          {
+            "http_only": false,
+            "name": "theme",
+            "same_site": "None",
+            "secure": false
+          }
+        ],
+        "error": null,
+        "headers": [
+          [
+            "Server",
+            "Apache/2.4.49"
+          ],
+          [
+            "Date",
+            "Thu, 08 Oct 2026 14:40:54 GMT"
+          ],
+          [
+            "X-Powered-By",
+            "PHP/8.1.0"
+          ],
+          [
+            "Set-Cookie",
+            "sessionid=<redacted>; Path=/"
+          ],
+          [
+            "Set-Cookie",
+            "theme=<redacted>; SameSite=None"
+          ],
+          [
+            "Content-Type",
+            "text/plain"
+          ],
+          [
+            "Content-Length",
+            "50"
+          ]
+        ],
+        "port": 8080,
+        "reason": "OK",
+        "redirect_location": null,
+        "redirect_same_host": null,
+        "scheme": "http",
+        "status": 200,
+        "url": "http://127.0.0.1:8080/"
+      }
+    ],
+    "tls": []
+  },
+  "port_counts": {
+    "closed": 0,
+    "error": 0,
+    "filtered": 0,
+    "open": 1
+  },
+  "ports": [
+    {
+      "error": null,
+      "latency_ms": 0.2,
+      "port": 8080,
+      "state": "open"
+    }
+  ],
+  "services": [
+    {
+      "confidence": "confirmed",
+      "evidence": "HTTP/1.0 200 OK; Server: Apache/2.4.49",
+      "guess_basis": null,
+      "is_http": true,
+      "is_tls": false,
+      "name": "http",
+      "port": 8080
+    }
+  ],
+  "stage_errors": [],
+  "status": "completed",
+  "summary": {
+    "aggregate_score": 80,
+    "counts_by_severity": {
+      "CRITICAL": 0,
+      "HIGH": 0,
+      "INFO": 2,
+      "LOW": 5,
+      "MEDIUM": 1
+    },
+    "highest_severity": "MEDIUM",
+    "rating": "MEDIUM"
+  },
+  "target": {
+    "address": "127.0.0.1",
+    "addresses": [
+      "127.0.0.1"
+    ],
+    "host": "127.0.0.1",
+    "is_ip_literal": true,
+    "ports_requested": 1,
+    "raw": "127.0.0.1"
+  }
+}

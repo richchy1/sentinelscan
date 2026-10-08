@@ -15,10 +15,11 @@ authors = [
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.10"]
+dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.10", "cryptography>=42"]
+tls-detail = ["cryptography>=42"]
 
 [project.scripts]
-sentinelscan = "sentinelscan.cli:main"
+sentinelscan = "sentinelscan.cli:run"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -39,4 +40,9 @@ strict = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v"
+addopts = "-v --strict-markers"
+pythonpath = ["tests"]
+markers = [
+    "unit: offline tests with no sockets or only loopback sockets",
+    "integration: tests against localhost fixture servers",
+]

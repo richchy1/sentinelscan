@@ -1,0 +1,1 @@
+"""Data models: frozen dataclasses and enums. No I/O."""
